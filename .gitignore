@@ -19,7 +19,6 @@ env/
 
 # Environment / secrets
 .env
-.env.*
 *.secret
 
 # MLflow

@@ -1,0 +1,5 @@
+{"original": "Your loan application is pending.", "rewritten": "Your loan application is currently under review.", "min_rouge1": 0.3}
+{"original": "Complete your application to see your rate.", "rewritten": "Finish your application today to view your personalized rate.", "min_rouge1": 0.2}
+{"original": "You qualify for a loan up to $5,000.", "rewritten": "Based on your profile, you may be eligible for up to $5,000.", "min_rouge1": 0.2}
+{"original": "We have received your documents.", "rewritten": "We have received your documents and are reviewing them now.", "min_rouge1": 0.3}
+{"original": "Log in to continue your application.", "rewritten": "Please log in to pick up where you left off.", "min_rouge1": 0.1}

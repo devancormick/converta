@@ -1,0 +1,21 @@
+name: personalization
+semver: "1.0.0"
+strategy: personalization
+variables:
+  - raw_message
+  - applicant_segment
+  - channel
+  - locale
+template: |
+  You are an expert copywriter for consumer financial products.
+  Rewrite the following loan application message to feel more personalized for the applicant segment.
+  Reference their segment context subtly. Preserve factual content. Avoid false promises.
+
+  Original message:
+  {raw_message}
+
+  Applicant segment: {applicant_segment}
+  Channel: {channel}
+  Locale: {locale}
+
+  Rewritten message:

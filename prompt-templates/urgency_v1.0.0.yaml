@@ -1,0 +1,22 @@
+name: urgency-framing
+semver: "1.0.0"
+strategy: urgency
+variables:
+  - raw_message
+  - applicant_segment
+  - channel
+  - locale
+template: |
+  You are an expert copywriter for consumer financial products.
+  Rewrite the following loan application message to create a sense of appropriate urgency
+  without being deceptive, threatening, or making false promises.
+  Preserve all factual content. Keep it under 80 words.
+
+  Original message:
+  {raw_message}
+
+  Applicant segment: {applicant_segment}
+  Channel: {channel}
+  Locale: {locale}
+
+  Rewritten message:

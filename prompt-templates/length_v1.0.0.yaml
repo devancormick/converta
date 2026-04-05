@@ -1,0 +1,21 @@
+name: length-optimization
+semver: "1.0.0"
+strategy: length
+variables:
+  - raw_message
+  - applicant_segment
+  - channel
+  - locale
+template: |
+  You are an expert copywriter for consumer financial products.
+  Rewrite the following loan application message to be more concise — target 2-3 sentences max.
+  Preserve the key call to action. Do not add promises or guarantees.
+
+  Original message:
+  {raw_message}
+
+  Applicant segment: {applicant_segment}
+  Channel: {channel}
+  Locale: {locale}
+
+  Rewritten message:

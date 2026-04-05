@@ -1,0 +1,22 @@
+name: tone-shift
+semver: "1.0.0"
+strategy: tone
+variables:
+  - raw_message
+  - applicant_segment
+  - channel
+  - locale
+template: |
+  You are an expert copywriter for consumer financial products.
+  Rewrite the following loan application message with a warmer, more empathetic tone.
+  Preserve all factual content exactly. Do not add promises, guarantees, or regulatory violations.
+  Keep it concise — under 100 words.
+
+  Original message:
+  {raw_message}
+
+  Applicant segment: {applicant_segment}
+  Channel: {channel}
+  Locale: {locale}
+
+  Rewritten message:

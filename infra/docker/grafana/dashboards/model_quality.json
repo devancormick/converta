@@ -1,0 +1,27 @@
+{
+  "title": "Converta — Model Quality",
+  "uid": "converta-model",
+  "schemaVersion": 38,
+  "panels": [
+    {
+      "id": 1,
+      "title": "Classifier Pass Rate",
+      "type": "gauge",
+      "targets": [{"expr": "converta_classifier_pass_rate", "legendFormat": "pass rate"}],
+      "fieldConfig": {"defaults": {"min": 0, "max": 1, "thresholds": {"steps": [{"color": "red", "value": 0}, {"color": "yellow", "value": 0.7}, {"color": "green", "value": 0.85}]}}}
+    },
+    {
+      "id": 2,
+      "title": "LLM Judge Score Distribution",
+      "type": "histogram",
+      "targets": [{"expr": "converta_llm_judge_score_bucket", "legendFormat": "{{le}}"}]
+    },
+    {
+      "id": 3,
+      "title": "Drift PSI by Feature",
+      "type": "bargauge",
+      "targets": [{"expr": "converta_drift_psi", "legendFormat": "{{feature}}"}],
+      "fieldConfig": {"defaults": {"thresholds": {"steps": [{"color": "green", "value": 0}, {"color": "yellow", "value": 0.2}, {"color": "red", "value": 0.25}]}}}
+    }
+  ]
+}

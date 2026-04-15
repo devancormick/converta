@@ -1,0 +1,31 @@
+{
+  "title": "Converta — System Health",
+  "uid": "converta-system",
+  "schemaVersion": 38,
+  "panels": [
+    {
+      "id": 1,
+      "title": "Request Rate (req/min)",
+      "type": "timeseries",
+      "targets": [{"expr": "rate(converta_requests_total[1m]) * 60", "legendFormat": "{{method}} {{endpoint}}"}]
+    },
+    {
+      "id": 2,
+      "title": "p95 Latency (seconds)",
+      "type": "timeseries",
+      "targets": [{"expr": "histogram_quantile(0.95, rate(converta_request_latency_seconds_bucket[5m]))", "legendFormat": "p95"}]
+    },
+    {
+      "id": 3,
+      "title": "Error Rate",
+      "type": "timeseries",
+      "targets": [{"expr": "rate(converta_errors_total[5m])", "legendFormat": "{{type}}"}]
+    },
+    {
+      "id": 4,
+      "title": "LLM Token Usage (cumulative)",
+      "type": "stat",
+      "targets": [{"expr": "converta_llm_tokens_total", "legendFormat": "{{model}} {{type}}"}]
+    }
+  ]
+}

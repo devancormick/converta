@@ -1,0 +1,13 @@
+{
+  "title": "Converta — Experiment Status",
+  "uid": "converta-experiments",
+  "schemaVersion": 38,
+  "panels": [
+    {
+      "id": 1,
+      "title": "Experiment Assignments by Variant",
+      "type": "timeseries",
+      "targets": [{"expr": "rate(converta_experiment_assignments_total[5m])", "legendFormat": "{{experiment_id}} / {{variant_id}}"}]
+    }
+  ]
+}

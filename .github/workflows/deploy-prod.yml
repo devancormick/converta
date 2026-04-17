@@ -1,0 +1,68 @@
+name: Deploy — Production
+
+on:
+  workflow_dispatch:
+    inputs:
+      image_tag:
+        description: "Docker image tag (commit SHA) to deploy"
+        required: true
+      confirm:
+        description: "Type 'deploy' to confirm"
+        required: true
+
+jobs:
+  safety-check:
+    name: Pre-deploy Safety Check
+    runs-on: ubuntu-latest
+    steps:
+      - name: Validate confirmation
+        run: |
+          if [ "${{ github.event.inputs.confirm }}" != "deploy" ]; then
+            echo "Confirmation invalid. Aborting."
+            exit 1
+          fi
+
+  deploy-prod:
+    name: Blue/Green Deploy to Production
+    runs-on: ubuntu-latest
+    environment: production
+    needs: safety-check
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: us-east-1
+
+      - name: Deploy to ECS production (blue/green)
+        env:
+          IMAGE_TAG: ${{ github.event.inputs.image_tag }}
+        run: |
+          aws ecs update-service \
+            --cluster converta-prod \
+            --service converta-api \
+            --force-new-deployment \
+            --region us-east-1
+
+      - name: Wait for stable deployment
+        run: |
+          aws ecs wait services-stable \
+            --cluster converta-prod \
+            --services converta-api \
+            --region us-east-1
+
+      - name: Post-deploy health checks
+        run: |
+          PROD_URL="${{ secrets.PROD_URL }}"
+          curl -f "$PROD_URL/health" || exit 1
+          echo "Production health check passed"
+
+      - name: Notify deployment
+        run: |
+          curl -X POST "${{ secrets.SLACK_WEBHOOK_URL }}" \
+            -H "Content-type: application/json" \
+            -d '{"text": ":rocket: Converta deployed to production — tag: ${{ github.event.inputs.image_tag }}"}'

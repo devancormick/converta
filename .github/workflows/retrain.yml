@@ -1,0 +1,36 @@
+name: Weekly Classifier Retrain
+
+on:
+  schedule:
+    - cron: "0 5 * * 0"   # Every Sunday at 05:00 UTC
+  workflow_dispatch:
+
+jobs:
+  retrain:
+    name: Retrain Quality Classifier
+    runs-on: ubuntu-latest
+    environment: staging
+
+    env:
+      DATABASE_URL: ${{ secrets.DATABASE_URL }}
+      MLFLOW_TRACKING_URI: ${{ secrets.MLFLOW_TRACKING_URI }}
+      AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+      AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+          cache: pip
+      - run: pip install -e ".[dev]"
+
+      - name: Train classifier and compare champion
+        run: python training/train_classifier.py --compare-champion --promote-if-better
+
+      - name: Notify result
+        if: always()
+        run: |
+          curl -X POST "${{ secrets.SLACK_WEBHOOK_URL }}" \
+            -H "Content-type: application/json" \
+            -d '{"text": ":robot_face: Weekly classifier retrain complete — check MLflow for results."}'

@@ -63,9 +63,10 @@ async def rewrite_message(
         reason = post_result.reason if not post_result.ok else "quality score below threshold"
         raise HTTPException(status_code=422, detail=f"Post-guardrail failure: {reason}")
 
-    # Trigger async evaluation
-    from services.evaluation.pipeline import run_evaluation_task
-    run_evaluation_task.delay(msg.id, payload.raw_message, result.text)
+    # Trigger async evaluation (skip if no Celery broker configured)
+    if settings.celery_broker_url:
+        from services.evaluation.pipeline import run_evaluation_task
+        run_evaluation_task.delay(msg.id, payload.raw_message, result.text)
 
     return RewriteResponse(
         message_id=msg.id,

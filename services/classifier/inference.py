@@ -1,11 +1,14 @@
 from __future__ import annotations
 
-import pickle
 import threading
 from dataclasses import dataclass
 from typing import Any
 
-import mlflow
+try:
+    import mlflow
+    _MLFLOW = True
+except ImportError:
+    _MLFLOW = False
 
 from data.schemas.config import Settings
 
@@ -24,6 +27,8 @@ class ClassifierResult:
 
 
 def load_champion() -> tuple[Any, str]:
+    if not _MLFLOW:
+        return None, "no-mlflow"
     try:
         client = mlflow.tracking.MlflowClient(tracking_uri=settings.mlflow_tracking_uri)
         alias_info = client.get_registered_model_alias(settings.classifier_model_name, "champion")

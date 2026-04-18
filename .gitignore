@@ -19,7 +19,21 @@ env/
 
 # Environment / secrets
 .env
+.env.dev
 *.secret
+
+# Local dev databases
+*.db
+.pgdata/
+
+# Local setup / infra scripts (machine-specific)
+fix_pf.sh
+fix_pf2.sh
+setup_https.sh
+setup_ports.sh
+
+# Claude Code local state
+.claude/
 
 # MLflow
 mlruns/

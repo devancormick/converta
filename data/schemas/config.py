@@ -12,6 +12,11 @@ class Settings(BaseSettings):
     openai_api_key: str = ""
     anthropic_api_key: str = ""
 
+    groq_api_key: str = ""
+    groq_model: str = "llama-3.3-70b-versatile"
+    openrouter_api_key: str = ""
+    openrouter_model: str = "meta-llama/llama-3.1-8b-instruct:free"
+
     mlflow_tracking_uri: str = "http://localhost:5001"
     s3_bucket: str = "llm-msgopt-prod"
     aws_region: str = "us-east-1"
